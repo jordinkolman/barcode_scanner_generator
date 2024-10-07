@@ -65,10 +65,10 @@ func main() {
 	fmt.Scanln(&path)
 
 
-	cmd := exec.Command("lp", path)
-	_, err := cmd.Output()
+	cmd := exec.Command("cmd.exe", "/c", "copy", path, "$env:PORTPROMPT", "/b")
+	result, err := cmd.Output()
 	if err != nil {
 		fmt.Println(err)
 	}
-
+	fmt.Println(string(result))
 }
