@@ -2,10 +2,12 @@ package main
 
 import (
 	"errors"
-	"image"
+	"fmt"
 	"image/png"
-	"log"
+
+	//"log"
 	"os"
+	"os/exec"
 
 	"github.com/makiuchi-d/gozxing"
 	"github.com/makiuchi-d/gozxing/oned"
@@ -37,42 +39,36 @@ func generateBarcode(imageFilepath string, barcodeFilepath string) (string, erro
 }
 
 // TODO: Implement barcode scanning function
-func scanBarcode(barcodeFilepath string) (*gozxing.Result, error) {
-	file, err := os.Open(barcodeFilepath)
-	if err != nil {
-		return nil, errors.New("could not open barcode")
-	}
 
-	img, _, err := image.Decode(file)
-	if err != nil {
-		return nil, errors.New("could not decode barcode file")
-	}
-
-	bmp, err := gozxing.NewBinaryBitmapFromImage(img)
-	if err != nil {
-		return nil, errors.New("could not generate binary bitmap from barcode image")
-	}
-
-	reader := oned.NewCode128Reader()
-	result, err := reader.Decode(bmp, nil)
-	if err != nil {
-		return nil, errors.New("invalid barcode")
-	}
-
-	return result, nil
-}
 
 // TODO: Implement main function
 func main() {
-	_, err := generateBarcode("images/go.png", "images/barcode1.png")
+	/*
+	_, err := generateBarcode("shirt_print_image.prn", "print_image_barcode.png")
 	if err != nil {
 		log.Fatal("could not generate barcode")
 	}
-	path, err := scanBarcode("./images/barcode1.png")
+	path, err := scanBarcode("print_image_barcode.png")
 	if err != nil {
 		log.Fatal("invalid barcode path")
 	}
-	print(path.GetText())
-	
+	fmt.Println(path.GetText())
+
+	cmd := exec.Command("code", path.GetText())
+	_, err = cmd.Output()
+	if err != nil {
+		fmt.Println(err)
+	}
+	*/
+	fmt.Println("Input Barcode:")
+	var path string
+	fmt.Scanln(&path)
+
+
+	cmd := exec.Command("lp", path)
+	_, err := cmd.Output()
+	if err != nil {
+		fmt.Println(err)
+	}
 
 }
